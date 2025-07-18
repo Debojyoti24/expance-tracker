@@ -1,11 +1,15 @@
-//script.js
 document.addEventListener("DOMContentLoaded", () => {
   const expenseForm = document.getElementById("expense-form");
   const expenseList = document.getElementById("expense-list");
   const totalAmount = document.getElementById("total-amount");
   const filterCategory = document.getElementById("filter-category");
 
-  let expenses = [];
+  // Load expenses from localStorage or initialize as empty array
+  let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+  // Display initial expenses and total
+  displayExpenses(expenses);
+  updateTotalAmount();
 
   expenseForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -24,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     expenses.push(expense);
+    // Save to localStorage
+    localStorage.setItem("expenses", JSON.stringify(expenses));
     displayExpenses(expenses);
     updateTotalAmount();
 
@@ -34,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.classList.contains("delete-btn")) {
       const id = parseInt(e.target.dataset.id);
       expenses = expenses.filter((expense) => expense.id !== id);
+      // Update localStorage
+      localStorage.setItem("expenses", JSON.stringify(expenses));
       displayExpenses(expenses);
       updateTotalAmount();
     }
@@ -48,6 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("expense-date").value = expense.date;
 
       expenses = expenses.filter((expense) => expense.id !== id);
+      // Update localStorage
+      localStorage.setItem("expenses", JSON.stringify(expenses));
       displayExpenses(expenses);
       updateTotalAmount();
     }
